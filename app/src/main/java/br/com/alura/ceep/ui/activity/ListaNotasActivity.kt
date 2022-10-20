@@ -36,10 +36,24 @@ class ListaNotasActivity : AppCompatActivity() {
         setContentView(binding.root)
         configuraFab()
         configuraRecyclerView()
+        configuraSwipeLayout()
         lifecycleScope.launch {
-            launch { repository.atualizaTodas() }
+            launch {
+                repository.sincroniza()
+            }
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 buscaNotas()
+            }
+        }
+
+    }
+
+    private fun configuraSwipeLayout() {
+        val swipe = binding.activityListaNotasSwipe
+        swipe.setOnRefreshListener {
+            lifecycleScope.launch {
+                repository.sincroniza()
+                swipe.isRefreshing = false
             }
         }
     }
@@ -51,6 +65,7 @@ class ListaNotasActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun configuraRecyclerView() {
         binding.activityListaNotasRecyclerview.adapter = adapter

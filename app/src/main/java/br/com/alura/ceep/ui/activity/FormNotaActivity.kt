@@ -47,7 +47,6 @@ class FormNotaActivity : AppCompatActivity() {
                 configuraCarregamentoDeImagem()
             }
         }
-
     }
 
     private suspend fun configuraCarregamentoDeImagem() {
@@ -66,6 +65,7 @@ class FormNotaActivity : AppCompatActivity() {
     private suspend fun tentaBuscarNota() {
         notaId?.let { id ->
             repository.buscaPorId(id)
+                .filterNotNull()
                 .collect { notaEncontrada ->
                     notaId = notaEncontrada.id
                     imagem.value = notaEncontrada.imagem

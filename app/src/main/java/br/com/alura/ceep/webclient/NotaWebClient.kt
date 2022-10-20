@@ -24,7 +24,7 @@ class NotaWebClient {
         } // o try / catch serve para caso ocorra algum imprevisto como falta de internet ele dê nulo em vez ed quebrar o app
     }
 
-    suspend fun salvar(nota: Nota) {
+    suspend fun salvar(nota: Nota): Boolean {
         try {
             val resposta = notaService.salvar(
                 nota.id, NotaRequisicao(
@@ -33,13 +33,20 @@ class NotaWebClient {
                     imagem = nota.imagem
                 )
             )
-            if (resposta.isSuccessful) {
-                Log.i("NotaWebClient", "salvar: Nota salva com sucesso")
-            } else {
-                Log.i("NotaWebClient", "salvar: Nota naõ foi salva")
-            }
+            return resposta.isSuccessful
         } catch (e: Exception) {
             Log.e("NotaWebClient", "salvar: ", e)
         }
+        return false
+    }
+
+    suspend fun remove(id: String): Boolean {
+        try {
+            notaService.remove(id)
+            return true
+        } catch (e: Exception) {
+            Log.e("NotaWebClient", "remove: ", e)
+        }
+        return false
     }
 }

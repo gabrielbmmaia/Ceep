@@ -13,5 +13,7 @@ data class Nota(
     val descricao: String,
     val imagem: String? = null,
     @ColumnInfo(defaultValue = "0") // o columinfo permite adicionar valores padroes na coluna
-    val sincronizado: Boolean = false
+    val sincronizado: Boolean = false,
+    @ColumnInfo(defaultValue = "0")
+    val desativada: Boolean = false
 )
